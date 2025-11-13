@@ -1,10 +1,11 @@
 import streamlit as st
 import pickle
 import numpy as np
+import pandas as pd
 
 # import the model
-pipe = pickle.load(open('pipe.pkl','rb'))
-df = pickle.load(open('df.pkl','rb'))
+df = pd.read_pickle("df.pkl")
+
 
 st.title("Laptop Predictor")
 
@@ -45,22 +46,5 @@ os = st.selectbox('OS',df['os'].unique())
 
 if st.button('Predict Price'):
     # query
-    ppi = None
-    if touchscreen == 'Yes':
-        touchscreen = 1
-    else:
-        touchscreen = 0
-
-    if ips == 'Yes':
-        ips = 1
-    else:
-        ips = 0
-
-    X_res = int(resolution.split('x')[0])
-    Y_res = int(resolution.split('x')[1])
-    ppi = ((X_res**2) + (Y_res**2))**0.5/screen_size
-    query = np.array([company,type,ram,weight,touchscreen,ips,ppi,cpu,hdd,ssd,gpu,os])
-
-    query = query.reshape(1,12)
-    st.title("The predicted price of this configuration is " + str(int(np.exp(pipe.predict(query)[0]))))
+    st.title("The predicted price of this configuration is ")
 
